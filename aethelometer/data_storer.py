@@ -1,6 +1,8 @@
 import os
 import re
 
+import shutil
+
 from aethelometer.data_handler import DataHandler
 
 
@@ -10,11 +12,12 @@ class DataStorer(DataHandler):
     inside a directory and in specific files.
     """
 
-    def __init__(self, data_dir):
+    def __init__(self, data_dir, backup_dir):
         """
         :param data_dir: directory where to store the data.
         """
         self.data_dir = data_dir
+        self.backup_dir = backup_dir
 
     def on_new_data(self, data):
         """ Calls the store method. """
@@ -42,5 +45,14 @@ class DataStorer(DataHandler):
             with open(out_filepath, "a") as out_file:
                 out_file.write(data)
                 out_file.write('\n')
+
+            # move previous files to the backup directory
+            # a file inside the store directory that is not current
+            # updated file is moved to the backup directory
+            for filename in os.listdir(self.data_dir):
+                if filename != out_filename:
+                    shutil.move(src=os.path.join(self.data_dir, filename),
+                                dst=os.path.join(self.backup_dir, filename))
+                    print("moved file %s to the backup directory" % filename)
 
             print("stored new line in %s" % out_filename)

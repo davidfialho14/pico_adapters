@@ -25,13 +25,20 @@ def main():
     config = Configuration(args['<config_file>'])
     config.load()
 
+    # check in the beginning if the directories in the configuration file exist
+
     store_dir = config.store_dir
     if not os.path.exists(store_dir):
-        print("the directory '%s' does not exist" % store_dir)
+        print("the store directory '%s' does not exist" % store_dir)
+        sys.exit(1)
+
+    backup_dir = config.backup_dir
+    if not os.path.exists(backup_dir):
+        print("the backup directory '%s' does not exist" % backup_dir)
         sys.exit(1)
 
     receiver = DataReceiver((config.ip_address, config.port))
-    receiver.register_data_handler(DataStorer(store_dir))
+    receiver.register_data_handler(DataStorer(store_dir, backup_dir))
 
     try:
         receiver.receive_forever()

@@ -12,7 +12,8 @@ class Configuration:
         self._params = {
             'ip_address': None,
             'port': None,
-            'store_dir': None
+            'store_dir': None,
+            'backup_dir': None
         }
 
     def load(self):
@@ -48,3 +49,7 @@ class Configuration:
     @property
     def store_dir(self):
         return self._params['store_dir']
+
+    @property
+    def backup_dir(self):
+        return self._params['backup_dir']
