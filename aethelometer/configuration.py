@@ -23,6 +23,7 @@ class Configuration:
         with open(self.config_file) as file:
             for i, line in enumerate(file):
                 try:
+                    line = line.rstrip('\n\r')
                     key, value = line.split(':')
                 except ValueError:
                     raise LoadError("error in line %d" % i)
