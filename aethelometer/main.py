@@ -9,6 +9,9 @@ Options:
   --version     Show version.
 
 """
+import os
+
+import sys
 from docopt import docopt
 
 from aethelometer.configuration import Configuration
@@ -22,8 +25,13 @@ def main():
     config = Configuration(args['<config_file>'])
     config.load()
 
+    store_dir = config.store_dir
+    if not os.path.exists(store_dir):
+        print("the directory '%s' does not exist" % store_dir)
+        sys.exit(1)
+
     receiver = DataReceiver((config.ip_address, config.port))
-    receiver.register_data_handler(DataStorer(config.store_dir))
+    receiver.register_data_handler(DataStorer(store_dir))
 
     try:
         receiver.receive_forever()

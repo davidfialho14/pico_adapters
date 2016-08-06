@@ -48,7 +48,9 @@ class DataReceiver:
                     print("Connected successfully")
 
                     while True:
+                        print("Waiting for data...")
                         data = self._receive(connection)
+                        print("Received data")
 
                         for handler in self._data_handlers:
                             handler.on_new_data(data)

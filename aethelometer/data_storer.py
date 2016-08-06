@@ -42,3 +42,5 @@ class DataStorer(DataHandler):
             with open(out_filepath, "a") as out_file:
                 out_file.write(data)
                 out_file.write('\n')
+
+            print("stored new line in %s" % out_filename)
