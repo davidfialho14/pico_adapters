@@ -1,5 +1,8 @@
 import logging
+import os
 from logging.handlers import TimedRotatingFileHandler
+
+import sys
 
 
 class Logging:
@@ -8,6 +11,10 @@ class Logging:
 
     @staticmethod
     def setup(filepath):
+        # redirect stderr to a file next to the log file with extension .err
+        filename, log_extension = os.path.splitext(filepath)
+        sys.stderr = open(filename + ".err", 'w')
+
         Logging.logger = logging.getLogger()
         Logging.logger.setLevel(logging.DEBUG)
 
