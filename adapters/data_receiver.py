@@ -65,7 +65,9 @@ class DataReceiver:
                         for handler in self._data_handlers:
                             handler.on_new_data(data)
 
-            except (ConnectionAbortedError, sock.timeout):
+            except ConnectionAbortedError:
+                Logging.warning("connection aborted by the sender")
+            except sock.timeout:
                 Logging.warning("connection timed out")
             except (sock.herror, sock.gaierror):
                 Logging.error("the address of the sender is not valid")
