@@ -47,7 +47,8 @@ class DataReceiver:
                 Logging.debug("Trying to connect to %s:%s..." %
                               (self._sender_address[0],
                                self._sender_address[1]))
-                with sock.create_connection(self._sender_address) as connection:
+                with sock.create_connection(self._sender_address,
+                                            timeout=30) as connection:
                     Logging.debug("Connected successfully")
 
                     while True:
