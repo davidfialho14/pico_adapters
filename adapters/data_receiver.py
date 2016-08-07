@@ -5,6 +5,11 @@ from data_handler import DataHandler
 from logger import Logging
 
 
+class InvalidFormatException(Exception):
+    """ Raised when the data received is not in the correct format. """
+    pass
+
+
 class DataReceiver:
     """
     The Data Receiver is responsible for the communication with the
@@ -12,13 +17,14 @@ class DataReceiver:
     receives a new chunk of data calls the data handlers' on_new_data() method.
     """
 
-    def __init__(self, sender_address):
+    def __init__(self, sender_address, decoder):
         self._sender_address = sender_address
         self._data_handlers = []
+        self._decoder = decoder
 
         # stores the data that may have been transferred during a receive call
         # and did not belong to the current line
-        self._cached_data = ""
+        self._cached_data = bytes()
 
     def register_data_handler(self, data_handler: DataHandler):
         """
@@ -68,7 +74,8 @@ class DataReceiver:
                 Logging.warning("can not reach the sender")
 
             # retry in connecting in 10 seconds
-            Logging.debug("connection failed: will try to connect in 10 seconds")
+            Logging.debug(
+                "connection failed: will try to connect in 10 seconds")
             sleep(10)
 
     def _receive(self, sender_connection) -> str:
@@ -77,7 +84,9 @@ class DataReceiver:
         sender fails. Before calling this method there must be already a valid
         connection with the sender. Raises a socket.timeout if it does not
         receive any message from the server in 6 minutes or if after receiving
-        data it does not receive more after 1 minute.
+        data it does not receive more after 1 minute. Calls the decoder once the
+        new data line is completely received.
+
         :param sender_connection: socket connection with the sender.
         :return: data received.
         """
@@ -92,7 +101,7 @@ class DataReceiver:
             # the verification of end of data must be the first step of the loop
             # this is because the cached data ma contain a complete line already
 
-            end_index = data.find("\r\n")
+            end_index = data.find(b'\r\n')
             if end_index != -1:
                 # reached the end of the data
 
@@ -115,6 +124,7 @@ class DataReceiver:
                 # the transmission
                 sender_connection.settimeout(1 * 60)
 
-            data += buffer.decode('utf-8')
+            # data += buffer.decode('utf-8')
+            data += buffer
 
-        return data
+        return self._decoder.decode(data)

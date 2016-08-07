@@ -1,8 +1,8 @@
-"""Aethelometer
+"""Anemometer
 
 Usage:
-  ./aethelometer <config_file>
-  ./aethelometer (-h | --help)
+  ./anemometer <config_file>
+  ./anemometer (-h | --help)
 
 Options:
   -h --help     Show this screen.
@@ -14,16 +14,16 @@ import sys
 
 from docopt import docopt
 
-from aethelometer_data_storer import AethelometerDataStorer
-from aethelometer_decoder import AethelometerDecoder
-from configs.aethelometer import AethelometerConfiguration
+from anemometer_data_storer import AnemometerDataStorer
+from anemometer_decoder import AnemometerDecoder
+from configs.anemometer import AnemometerConfiguration
 from data_receiver import DataReceiver
 
 
 def main():
     args = docopt(__doc__)
 
-    config = AethelometerConfiguration(args['<config_file>'])
+    config = AnemometerConfiguration(args['<config_file>'])
     config.load()
 
     # check in the beginning if the directories in the configuration file exist
@@ -39,8 +39,8 @@ def main():
         sys.exit(1)
 
     receiver = DataReceiver((config.ip_address, config.port),
-                            AethelometerDecoder)
-    receiver.register_data_handler(AethelometerDataStorer(store_dir, backup_dir))
+                            AnemometerDecoder)
+    receiver.register_data_handler(AnemometerDataStorer(store_dir, backup_dir))
 
     try:
         receiver.receive_forever()
