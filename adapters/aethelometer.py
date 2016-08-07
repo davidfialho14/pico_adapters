@@ -24,8 +24,6 @@ from logger import Logging
 def main():
     args = docopt(__doc__)
 
-    Logging.info("Started")
-
     config = AethelometerConfiguration(args['<config_file>'])
     config.load()
 
@@ -46,6 +44,7 @@ def main():
     receiver.register_data_handler(AethelometerDataStorer(store_dir, backup_dir))
 
     try:
+        Logging.info("Started")
         receiver.receive_forever()
     except KeyboardInterrupt:
         # user pressed Ctrl-C to close the program
