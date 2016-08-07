@@ -14,10 +14,10 @@ import sys
 
 from docopt import docopt
 
+from aethelometer_data_storer import AethelometerDataStorer
 from aethelometer_decoder import AethelometerDecoder
 from configs.aethelometer import AethelometerConfiguration
 from data_receiver import DataReceiver
-from data_storer import DataStorer
 
 
 def main():
@@ -40,7 +40,7 @@ def main():
 
     receiver = DataReceiver((config.ip_address, config.port),
                             AethelometerDecoder)
-    receiver.register_data_handler(DataStorer(store_dir, backup_dir))
+    receiver.register_data_handler(AethelometerDataStorer(store_dir, backup_dir))
 
     try:
         receiver.receive_forever()
