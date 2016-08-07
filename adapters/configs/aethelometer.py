@@ -44,6 +44,7 @@ class AethelometerConfiguration(BaseConfiguration):
         Checks if all the necessary parameters were loaded. It raises
         a LoadError if not.
         """
-        if None in self._params.values():
-            raise LoadError("configuration file is missing one or more "
-                            "parameters")
+        for key, value in self._params.items():
+            if value is None:
+                raise LoadError("the configuration file is missing "
+                                "the parameter '%s'" % key)
