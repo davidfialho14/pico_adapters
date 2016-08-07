@@ -1,4 +1,4 @@
-import logging
+from adapters.logger import Logging
 
 
 class LoadError(Exception):
@@ -37,7 +37,7 @@ class BaseConfiguration:
 
                 self._add_param(key, value)
 
-        self.__init_log(log_file)
+        Logging.setup(log_file)
         self._finished_loading()
 
     def _add_param(self, param_key, param_value):
@@ -56,11 +56,3 @@ class BaseConfiguration:
         a LoadError if the implementation detects a loading error at this point.
         """
         pass
-
-    def __init_log(self, log_file):
-        """
-        Initiates the log file. If log_file is None the logs will be printed
-        to the stdout.
-        """
-        logging.basicConfig(filename=log_file, level=logging.DEBUG,
-                            format='%(asctime)s:%(levelname)s:%(message)s')

@@ -1,8 +1,8 @@
-import logging
 import socket as sock
 from time import sleep
 
 from adapters.data_handler import DataHandler
+from adapters.logger import Logging
 
 
 class DataReceiver:
@@ -44,30 +44,30 @@ class DataReceiver:
 
         while True:  # allow reconnecting on error
             try:
-                logging.debug("Trying to connect to %s:%s..." %
+                Logging.debug("Trying to connect to %s:%s..." %
                               (self._sender_address[0],
                                self._sender_address[1]))
                 with sock.create_connection(self._sender_address) as connection:
-                    logging.debug("Connected successfully")
+                    Logging.debug("Connected successfully")
 
                     while True:
-                        logging.info("Waiting for data...")
+                        Logging.info("Waiting for data...")
                         data = self._receive(connection)
-                        logging.info("Received data")
+                        Logging.info("Received data")
 
                         for handler in self._data_handlers:
                             handler.on_new_data(data)
 
             except (ConnectionAbortedError, sock.timeout):
-                logging.warning("connection timed out")
+                Logging.warning("connection timed out")
             except (sock.herror, sock.gaierror):
-                logging.error("the address of the sender is not valid")
+                Logging.error("the address of the sender is not valid")
                 break  # leave the function
             except (ConnectionRefusedError, sock.error):
-                logging.warning("can not reach the sender")
+                Logging.warning("can not reach the sender")
 
             # retry in connecting in 10 seconds
-            logging.debug("connection failed: will try to connect in 10 seconds")
+            Logging.debug("connection failed: will try to connect in 10 seconds")
             sleep(10)
 
     def _receive(self, sender_connection) -> str:

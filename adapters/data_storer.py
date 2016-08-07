@@ -1,9 +1,9 @@
-import logging
 import os
 import re
 import shutil
 
 from adapters.data_handler import DataHandler
+from adapters.logger import Logging
 
 
 class DataStorer(DataHandler):
@@ -48,11 +48,11 @@ class DataStorer(DataHandler):
                 for filename in os.listdir(self.data_dir):
                     shutil.move(src=os.path.join(self.data_dir, filename),
                                 dst=os.path.join(self.backup_dir, filename))
-                    logging.info("moved file %s to the backup "
+                    Logging.info("moved file %s to the backup "
                                  "directory" % filename)
 
             with open(out_filepath, "a") as out_file:
                 out_file.write(data)
                 out_file.write('\n')
 
-            logging.info("stored new line in %s" % out_filename)
+            Logging.info("stored new line in %s" % out_filename)
