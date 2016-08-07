@@ -12,17 +12,17 @@ Options:
 import os
 import sys
 
-from aethelometer.configuration import Configuration
-from aethelometer.data_storer import DataStorer
 from docopt import docopt
 
+from adapters.configs.aethelometer import AethelometerConfiguration
 from adapters.data_receiver import DataReceiver
+from adapters.data_storer import DataStorer
 
 
 def main():
     args = docopt(__doc__)
 
-    config = Configuration(args['<config_file>'])
+    config = AethelometerConfiguration(args['<config_file>'])
     config.load()
 
     # check in the beginning if the directories in the configuration file exist
