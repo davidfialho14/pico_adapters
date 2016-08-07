@@ -14,9 +14,9 @@ import sys
 
 from docopt import docopt
 
-from adapters.configs.aethelometer import AethelometerConfiguration
-from adapters.data_receiver import DataReceiver
-from adapters.data_storer import DataStorer
+from configs.aethelometer import AethelometerConfiguration
+from data_receiver import DataReceiver
+from data_storer import DataStorer
 
 
 def main():

@@ -1,4 +1,4 @@
-from adapters.logger import Logging
+from logger import Logging
 
 
 class LoadError(Exception):

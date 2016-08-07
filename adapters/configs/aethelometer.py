@@ -1,4 +1,4 @@
-from adapters.configs.base import BaseConfiguration, LoadError
+from configs.base import BaseConfiguration, LoadError
 
 
 class AethelometerConfiguration(BaseConfiguration):

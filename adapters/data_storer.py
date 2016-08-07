@@ -2,8 +2,8 @@ import os
 import re
 import shutil
 
-from adapters.data_handler import DataHandler
-from adapters.logger import Logging
+from data_handler import DataHandler
+from logger import Logging
 
 
 class DataStorer(DataHandler):
