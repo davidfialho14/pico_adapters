@@ -5,6 +5,11 @@ from data_handler import DataHandler
 from logger import Logging
 
 
+class InvalidFormatException(Exception):
+    """ Raised when the data received is not in the correct format. """
+    pass
+
+
 class DataReceiver:
     """
     The Data Receiver is responsible for the communication with the
@@ -69,7 +74,8 @@ class DataReceiver:
                 Logging.warning("can not reach the sender")
 
             # retry in connecting in 10 seconds
-            Logging.debug("connection failed: will try to connect in 10 seconds")
+            Logging.debug(
+                "connection failed: will try to connect in 10 seconds")
             sleep(10)
 
     def _receive(self, sender_connection) -> str:
