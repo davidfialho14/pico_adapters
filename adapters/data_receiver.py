@@ -1,3 +1,4 @@
+import logging
 import socket as sock
 from time import sleep
 
@@ -7,7 +8,7 @@ from adapters.data_handler import DataHandler
 class DataReceiver:
     """
     The Data Receiver is responsible for the communication with the
-    aethelometer. It can be associated with one or more data handlers. When it
+    sender. It can be associated with one or more data handlers. When it
     receives a new chunk of data calls the data handlers' on_new_data() method.
     """
 
@@ -43,28 +44,30 @@ class DataReceiver:
 
         while True:  # allow reconnecting on error
             try:
-                print("Trying to connect to sender...")
+                logging.debug("Trying to connect to %s:%s..." %
+                              (self._sender_address[0],
+                               self._sender_address[1]))
                 with sock.create_connection(self._sender_address) as connection:
-                    print("Connected successfully")
+                    logging.debug("Connected successfully")
 
                     while True:
-                        print("Waiting for data...")
+                        logging.info("Waiting for data...")
                         data = self._receive(connection)
-                        print("Received data")
+                        logging.info("Received data")
 
                         for handler in self._data_handlers:
                             handler.on_new_data(data)
 
             except (ConnectionAbortedError, sock.timeout):
-                print("connection timed out")
+                logging.warning("connection timed out")
             except (sock.herror, sock.gaierror):
-                print("the address of the aethelometer is not valid")
+                logging.error("the address of the sender is not valid")
                 break  # leave the function
             except (ConnectionRefusedError, sock.error):
-                print("can not reach the aethelometer")
+                logging.warning("can not reach the sender")
 
             # retry in connecting in 10 seconds
-            print("connection failed: will try to connect in 10 seconds")
+            logging.debug("connection failed: will try to connect in 10 seconds")
             sleep(10)
 
     def _receive(self, sender_connection) -> str:

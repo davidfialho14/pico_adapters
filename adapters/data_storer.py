@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 import shutil
@@ -52,6 +53,7 @@ class DataStorer(DataHandler):
                 if filename != out_filename:
                     shutil.move(src=os.path.join(self.data_dir, filename),
                                 dst=os.path.join(self.backup_dir, filename))
-                    print("moved file %s to the backup directory" % filename)
+                    logging.info("moved file %s to the backup "
+                                 "directory" % filename)
 
-            print("stored new line in %s" % out_filename)
+            logging.info("stored new line in %s" % out_filename)
