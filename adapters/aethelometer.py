@@ -18,6 +18,7 @@ from aethelometer_data_storer import AethelometerDataStorer
 from aethelometer_decoder import AethelometerDecoder
 from configs.aethelometer import AethelometerConfiguration
 from data_receiver import DataReceiver
+from logger import Logging
 
 
 def main():
@@ -43,12 +44,13 @@ def main():
     receiver.register_data_handler(AethelometerDataStorer(store_dir, backup_dir))
 
     try:
+        Logging.info("Started")
         receiver.receive_forever()
     except KeyboardInterrupt:
         # user pressed Ctrl-C to close the program
-        print("Closing...")
+        Logging.info("Closing...")
 
-    print("Closed")
+    Logging.info("Closed")
 
 
 if __name__ == '__main__':
