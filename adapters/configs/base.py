@@ -1,3 +1,6 @@
+import logging
+
+
 class LoadError(Exception):
     """ Raised when an error occurs while loading the config file. """
 
@@ -18,6 +21,8 @@ class BaseConfiguration:
         Loads the configuration file. Raises LoadError if the config file
         is corrupted.
         """
+        log_file = None  # will store the loaded path to the log file
+
         with open(self.config_file) as file:
             for i, line in enumerate(file):
                 try:
@@ -26,8 +31,13 @@ class BaseConfiguration:
                 except ValueError:
                     raise LoadError("error in line %d" % i)
 
+                if key == 'log':
+                    log_file = value
+                    continue
+
                 self._add_param(key, value)
 
+        self.__init_log(log_file)
         self._finished_loading()
 
     def _add_param(self, param_key, param_value):
@@ -46,3 +56,11 @@ class BaseConfiguration:
         a LoadError if the implementation detects a loading error at this point.
         """
         pass
+
+    def __init_log(self, log_file):
+        """
+        Initiates the log file. If log_file is None the logs will be printed
+        to the stdout.
+        """
+        logging.basicConfig(filename=log_file, level=logging.DEBUG,
+                            format='%(asctime)s:%(levelname)s:%(message)s')
