@@ -1,7 +1,7 @@
 import socket as sock
 from time import sleep
 
-from aethelometer.data_handler import DataHandler
+from adapters.data_handler import DataHandler
 
 
 class DataReceiver:

@@ -1,9 +1,8 @@
 import os
 import re
-
 import shutil
 
-from aethelometer.data_handler import DataHandler
+from adapters.data_handler import DataHandler
 
 
 class DataStorer(DataHandler):

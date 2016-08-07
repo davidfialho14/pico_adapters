@@ -10,13 +10,13 @@ Options:
 
 """
 import os
-
 import sys
-from docopt import docopt
 
 from aethelometer.configuration import Configuration
-from aethelometer.data_receiver import DataReceiver
 from aethelometer.data_storer import DataStorer
+from docopt import docopt
+
+from adapters.data_receiver import DataReceiver
 
 
 def main():
