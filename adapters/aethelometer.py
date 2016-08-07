@@ -1,4 +1,4 @@
-"""AethelometerAdapter
+"""Aethelometer
 
 Usage:
   aethelometer.py <config_file>
