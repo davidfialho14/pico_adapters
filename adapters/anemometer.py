@@ -18,10 +18,13 @@ from anemometer_data_storer import AnemometerDataStorer
 from anemometer_decoder import AnemometerDecoder
 from configs.anemometer import AnemometerConfiguration
 from data_receiver import DataReceiver
+from logger import Logging
 
 
 def main():
     args = docopt(__doc__)
+
+    Logging.info("Started")
 
     config = AnemometerConfiguration(args['<config_file>'])
     config.load()
@@ -46,9 +49,9 @@ def main():
         receiver.receive_forever()
     except KeyboardInterrupt:
         # user pressed Ctrl-C to close the program
-        print("Closing...")
+        Logging.info("Closing...")
 
-    print("Closed")
+    Logging.info("Closed")
 
 
 if __name__ == '__main__':
