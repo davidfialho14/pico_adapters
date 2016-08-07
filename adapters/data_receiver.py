@@ -18,7 +18,7 @@ class DataReceiver:
 
         # stores the data that may have been transferred during a receive call
         # and did not belong to the current line
-        self._cached_data = ""
+        self._cached_data = bytes()
 
     def register_data_handler(self, data_handler: DataHandler):
         """
@@ -92,7 +92,7 @@ class DataReceiver:
             # the verification of end of data must be the first step of the loop
             # this is because the cached data ma contain a complete line already
 
-            end_index = data.find("\r\n")
+            end_index = data.find(b'\r\n')
             if end_index != -1:
                 # reached the end of the data
 
@@ -115,6 +115,17 @@ class DataReceiver:
                 # the transmission
                 sender_connection.settimeout(1 * 60)
 
-            data += buffer.decode('utf-8')
+            # data += buffer.decode('utf-8')
+            data += buffer
 
-        return data
+        return self._decode(data)
+
+    def _decode(self, data: bytes) -> str:
+        """
+        Called after a new line of data is received. It decodes the line of data
+        according to the format supported by the DataReceiver implementation.
+
+        :param data: byte string with encoded data.
+        :return: decoded data in string format.
+        """
+        pass
