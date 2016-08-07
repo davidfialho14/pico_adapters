@@ -48,7 +48,9 @@ def main():
         receiver.receive_forever()
     except KeyboardInterrupt:
         # user pressed Ctrl-C to close the program
-        Logging.info("Closing...")
+        Logging.info("Closing as requested by user...")
+    except BaseException:
+        Logging.exception("Program will closed due to unexpected error...")
 
     Logging.info("Closed")
 
