@@ -12,9 +12,10 @@ class DataReceiver:
     receives a new chunk of data calls the data handlers' on_new_data() method.
     """
 
-    def __init__(self, sender_address):
+    def __init__(self, sender_address, decoder):
         self._sender_address = sender_address
         self._data_handlers = []
+        self._decoder = decoder
 
         # stores the data that may have been transferred during a receive call
         # and did not belong to the current line
@@ -77,7 +78,9 @@ class DataReceiver:
         sender fails. Before calling this method there must be already a valid
         connection with the sender. Raises a socket.timeout if it does not
         receive any message from the server in 6 minutes or if after receiving
-        data it does not receive more after 1 minute.
+        data it does not receive more after 1 minute. Calls the decoder once the
+        new data line is completely received.
+
         :param sender_connection: socket connection with the sender.
         :return: data received.
         """
@@ -118,14 +121,4 @@ class DataReceiver:
             # data += buffer.decode('utf-8')
             data += buffer
 
-        return self._decode(data)
-
-    def _decode(self, data: bytes) -> str:
-        """
-        Called after a new line of data is received. It decodes the line of data
-        according to the format supported by the DataReceiver implementation.
-
-        :param data: byte string with encoded data.
-        :return: decoded data in string format.
-        """
-        pass
+        return self._decoder.decode(data)

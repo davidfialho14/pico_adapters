@@ -14,8 +14,9 @@ import sys
 
 from docopt import docopt
 
-from aethelometer_data_receiver import AethelometerDataReceiver
+from aethelometer_decoder import AethelometerDecoder
 from configs.aethelometer import AethelometerConfiguration
+from data_receiver import DataReceiver
 from data_storer import DataStorer
 
 
@@ -37,7 +38,8 @@ def main():
         print("the backup directory '%s' does not exist" % backup_dir)
         sys.exit(1)
 
-    receiver = AethelometerDataReceiver((config.ip_address, config.port))
+    receiver = DataReceiver((config.ip_address, config.port),
+                            AethelometerDecoder)
     receiver.register_data_handler(DataStorer(store_dir, backup_dir))
 
     try:
