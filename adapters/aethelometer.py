@@ -1,8 +1,8 @@
 """Aethelometer
 
 Usage:
-  aethelometer.py <config_file>
-  aethelometer.py (-h | --help)
+  ./aethelometer <config_file>
+  ./aethelometer (-h | --help)
 
 Options:
   -h --help     Show this screen.
