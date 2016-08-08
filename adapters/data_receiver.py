@@ -1,6 +1,7 @@
 import socket as sock
 from time import sleep
 
+from connection_handler import ConnectionHandler
 from data_handler import DataHandler
 from logger import Logging
 
@@ -20,6 +21,7 @@ class DataReceiver:
     def __init__(self, sender_address, decoder):
         self._sender_address = sender_address
         self._data_handlers = []
+        self._connection_handlers = []
         self._decoder = decoder
 
         # stores the data that may have been transferred during a receive call
@@ -40,6 +42,20 @@ class DataReceiver:
         """
         self._data_handlers.remove(data_handler)
 
+    def register_connection_handler(self, connection_handler: ConnectionHandler):
+        """
+        Registers a new connection handler in the receiver.
+        :param connection_handler: new connection handler to register.
+        """
+        self._connection_handlers.append(connection_handler)
+
+    def remove_connection_handler(self, connection_handler: ConnectionHandler):
+        """
+        Removes a connection handler from the registered handlers.
+        :param connection_handler: connection handler to be removed.
+        """
+        self._connection_handlers.remove(connection_handler)
+
     def receive_forever(self):
         """
         Puts the receiver in receiving mode forever. In this mode the receiver
@@ -55,6 +71,10 @@ class DataReceiver:
                                self._sender_address[1]))
                 with sock.create_connection(self._sender_address,
                                             timeout=30) as connection:
+
+                    for handler in self._connection_handlers:
+                        handler.on_new_connection(self._sender_address)
+
                     Logging.debug("Connected successfully")
 
                     while True:
