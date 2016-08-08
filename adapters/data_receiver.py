@@ -73,7 +73,8 @@ class DataReceiver:
                                             timeout=30) as connection:
 
                     for handler in self._connection_handlers:
-                        handler.on_new_connection(self._sender_address)
+                        handler.on_new_connection(connection,
+                                                  self._sender_address)
 
                     Logging.debug("Connected successfully")
 

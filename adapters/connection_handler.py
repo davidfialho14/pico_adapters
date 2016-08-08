@@ -5,7 +5,7 @@ class ConnectionHandler:
     disconnection is not supported).
     """
 
-    def on_new_connection(self, sender_address):
+    def on_new_connection(self, connection, sender_address):
         """
         Invoked by the receiver connects with the sender. Takes the address
         of the server in the standard 2-tuple format.
