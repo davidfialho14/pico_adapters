@@ -5,7 +5,7 @@ from data_storer import DataStorer
 
 class AethelometerDataStorer(DataStorer):
     """
-    Stores data lines inside files with the name BCDDMMYY.CSV, where DD is
+    Stores data lines inside files with the name BCYYMMDD.CSV, where DD is
     the day of the data line, MM is the month of the line, and YY is the year.
     The files are stored in the store_dir and moved to the backup_dir once
     a new file is created.
@@ -19,15 +19,15 @@ class AethelometerDataStorer(DataStorer):
     }
 
     def _generate_filename(self, data: str, current_datetime) -> str:
-        """ Generates filename with the format BCddmmyy.CSV"""
+        """ Generates filename with the format BCyymmdd.CSV"""
         match_result = self.date_pattern.match(data)
 
         if match_result:
             # use datetime from the data line
             return "BC%s%02d%s.CSV" % \
-                   (match_result.group('day'),
+                   (match_result.group('year'),
                     self.month_to_int[match_result.group('month')],
-                    match_result.group('year'))
+                    match_result.group('day'))
         else:
             # use current datetime
-            return current_datetime.strftime("BC%d%m%y.CSV")
+            return current_datetime.strftime("BC%y%m%d.CSV")
