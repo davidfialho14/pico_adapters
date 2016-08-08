@@ -10,6 +10,7 @@ Options:
 
 """
 import os
+import signal
 import sys
 
 from docopt import docopt
@@ -21,11 +22,18 @@ from data_receiver import DataReceiver
 from logger import Logging
 
 
+def raise_keyboard_interrupt(signum, frame):
+    raise KeyboardInterrupt
+
+
 def main():
     args = docopt(__doc__)
 
     config = AethelometerConfiguration(args['<config_file>'])
     config.load()
+
+    # make terminate signals raise keyboard interrupts
+    signal.signal(signal.SIGTERM, raise_keyboard_interrupt)
 
     # check in the beginning if the directories in the configuration file exist
 
