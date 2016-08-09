@@ -1,9 +1,9 @@
-from configs.aethelometer import AethelometerConfiguration
+from configs.aethalometer import AethalometerConfiguration
 
 
-class AnemometerConfiguration(AethelometerConfiguration):
+class AnemometerConfiguration(AethalometerConfiguration):
     """
-    Exaclty the same as AethelometerConfiguration. This class only exists
+    Exaclty the same as AethalometerConfiguration. This class only exists
     for name coherence.
     """
     pass

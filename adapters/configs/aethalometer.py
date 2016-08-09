@@ -1,9 +1,9 @@
 from configs.base import BaseConfiguration, LoadError
 
 
-class AethelometerConfiguration(BaseConfiguration):
+class AethalometerConfiguration(BaseConfiguration):
     """
-    Subclasses the Configuration class to adapt for the aethelometer
+    Subclasses the Configuration class to adapt for the aethalometer
     configurations.
     """
     def __init__(self, config_file):

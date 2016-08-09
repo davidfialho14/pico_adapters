@@ -1,8 +1,8 @@
-"""Aethelometer
+"""Aethalometer
 
 Usage:
-  ./aethelometer <config_file>
-  ./aethelometer (-h | --help)
+  ./aethalometer <config_file>
+  ./aethalometer (-h | --help)
 
 Options:
   -h --help     Show this screen.
@@ -15,9 +15,9 @@ import sys
 
 from docopt import docopt
 
-from aethelometer_data_storer import AethelometerDataStorer
-from aethelometer_decoder import AethelometerDecoder
-from configs.aethelometer import AethelometerConfiguration
+from aethalometer_data_storer import AethalometerDataStorer
+from aethalometer_decoder import AethalometerDecoder
+from configs.aethalometer import AethalometerConfiguration
 from data_receiver import DataReceiver
 from logger import Logging
 
@@ -29,7 +29,7 @@ def raise_keyboard_interrupt(signum, frame):
 def main():
     args = docopt(__doc__)
 
-    config = AethelometerConfiguration(args['<config_file>'])
+    config = AethalometerConfiguration(args['<config_file>'])
     config.load()
 
     # make terminate signals raise keyboard interrupts
@@ -48,8 +48,8 @@ def main():
         sys.exit(1)
 
     receiver = DataReceiver((config.ip_address, config.port),
-                            AethelometerDecoder)
-    receiver.register_data_handler(AethelometerDataStorer(store_dir, backup_dir))
+                            AethalometerDecoder)
+    receiver.register_data_handler(AethalometerDataStorer(store_dir, backup_dir))
 
     try:
         Logging.info("Started")
