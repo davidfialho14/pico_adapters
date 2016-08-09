@@ -118,7 +118,7 @@ class DataReceiver:
 
         # get the data cached in the previous receive call
         data = self._cached_data
-        self._cached_data = ""  # ensure the cached data is cleared
+        self._cached_data = bytes()  # ensure the cached data is cleared
 
         while True:
             # the verification of end of data must be the first step of the loop
