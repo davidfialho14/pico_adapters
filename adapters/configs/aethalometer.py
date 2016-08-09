@@ -1,7 +1,5 @@
 import os
 
-import sys
-
 from configs.base import BaseConfiguration, LoadError
 
 

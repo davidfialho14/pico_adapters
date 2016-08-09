@@ -1,7 +1,7 @@
-from configs.aethelometer import AethelometerConfiguration
+from configs.aethalometer import AethalometerConfiguration
 
 
-class DataTakerConfiguration(AethelometerConfiguration):
+class DataTakerConfiguration(AethalometerConfiguration):
     """
     Extends the aethelometer configuration by adding support for a cmd_file
     parameter.
