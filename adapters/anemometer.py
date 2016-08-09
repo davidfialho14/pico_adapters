@@ -13,6 +13,7 @@ from docopt import docopt
 
 from anemometer_data_storer import AnemometerDataStorer
 from anemometer_decoder import AnemometerDecoder
+from anemometro_connection_handler import AnemometerConnectionHandler
 from app import Application
 from configs.anemometer import AnemometerConfiguration
 
@@ -24,7 +25,7 @@ def main():
     app.run(decoder=AnemometerDecoder,
             data_handlers=(AnemometerDataStorer(config.store_dir,
                                                 config.backup_dir),),
-            connection_handlers=())
+            connection_handlers=(AnemometerConnectionHandler(config.cmd_file),))
 
 if __name__ == '__main__':
     main()
