@@ -3,7 +3,7 @@ import re
 from data_storer import DataStorer
 
 
-class AethelometerDataStorer(DataStorer):
+class DataTakerDataStorer(DataStorer):
     """
     Stores data lines inside files with the name DKYYMMDD.CSV, where DD is
     the day of the data line, MM is the month of the line, and YY is the year.
