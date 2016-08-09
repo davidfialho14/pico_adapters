@@ -1,3 +1,5 @@
+from contextlib import suppress
+
 from connection_handler import ConnectionHandler
 
 
@@ -14,15 +16,19 @@ class AnemometerConnectionHandler(ConnectionHandler):
         Sends the commands in the cmd_file to the device. Before sending the
         commands in the cmd_file sends the Time command.
         """
-        with open(self._cmd_file) as cmd_file:
-            # enter in command mode
-            self._deploy_cmd(data_receiver, connection, "*")
+        # before sending commands always open the file to ensure it exists
+        # before sending commands
 
-            # execute commands
-            for cmd in cmd_file:
-                cmd = cmd.replace("\n", "")  # clear the \n from the cmd
-                self._deploy_cmd(data_receiver, connection, cmd)
+        with suppress(FileNotFoundError):
+            with open(self._cmd_file) as cmd_file:
+                # enter in command mode
+                self._deploy_cmd(data_receiver, connection, "*")
 
-            # close command mode
-            self._deploy_cmd(data_receiver, connection, "Q")
+                # execute commands
+                for cmd in cmd_file:
+                    cmd = cmd.replace("\n", "")  # clear the \n from the cmd
+                    self._deploy_cmd(data_receiver, connection, cmd)
+
+                # close command mode
+                self._deploy_cmd(data_receiver, connection, "Q")
 
