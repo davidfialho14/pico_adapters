@@ -31,4 +31,4 @@ class DataTakerConnectionHandler(ConnectionHandler):
         Sends a command in string format to the device.
         Includes the \r\n in the end of the cmd.
         """
-        connection.sendall(bytes(cmd + "\r\n"))
+        connection.sendall((cmd + "\r\n").encode())
