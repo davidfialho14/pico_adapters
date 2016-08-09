@@ -73,7 +73,7 @@ class DataReceiver:
                                             timeout=30) as connection:
 
                     for handler in self._connection_handlers:
-                        handler.on_new_connection(connection,
+                        handler.on_new_connection(self, connection,
                                                   self._sender_address)
 
                     Logging.debug("Connected successfully")
@@ -81,7 +81,7 @@ class DataReceiver:
                     while True:
                         try:
                             Logging.info("Waiting for data...")
-                            data = self._receive(connection)
+                            data = self.receive(connection)
                             Logging.info("Received data")
 
                             for handler in self._data_handlers:
@@ -107,7 +107,7 @@ class DataReceiver:
                 "connection failed: will try to connect in 10 seconds")
             sleep(10)
 
-    def _receive(self, sender_connection) -> str:
+    def receive(self, sender_connection, timeout=6*60) -> str:
         """
         Blocks until a new chunk of data is received or the connection with the
         sender fails. Before calling this method there must be already a valid
@@ -116,11 +116,15 @@ class DataReceiver:
         data it does not receive more after 1 minute. Calls the decoder once the
         new data line is completely received.
 
+        :param timeout: timeout to wait for data. by default its 6 minutes.
         :param sender_connection: socket connection with the sender.
         :return: data received.
         """
-        # set a receive timeout of 6 minutes
-        sender_connection.settimeout(6 * 60)
+        data = self.raw_receive(sender_connection, timeout)
+        return self._decoder.decode(data)
+
+    def raw_receive(self, sender_connection, timeout=6*60) -> bytes:
+        sender_connection.settimeout(timeout)
 
         # get the data cached in the previous receive call
         data = self._cached_data
@@ -156,4 +160,4 @@ class DataReceiver:
             # data += buffer.decode('utf-8')
             data += buffer
 
-        return self._decoder.decode(data)
+        return data
