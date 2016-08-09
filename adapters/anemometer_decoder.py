@@ -30,6 +30,6 @@ class AnemometerDecoder:
         # for now the checksum is ignored
 
         # take only the data - remove the end byte and the comma before it
-        data = data[start_index:end_index - 1]
+        data = data[start_index + 1:end_index - 1]
 
         return data.decode('utf-8')
