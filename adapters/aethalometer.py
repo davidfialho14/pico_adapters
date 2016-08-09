@@ -23,7 +23,8 @@ def main():
 
     app.run(decoder=AethalometerDecoder,
             data_handlers=(AethalometerDataStorer(config.store_dir,
-                                                  config.backup_dir),))
+                                                  config.backup_dir),),
+            connection_handlers=())
 
 if __name__ == '__main__':
     main()
