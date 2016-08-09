@@ -1,3 +1,4 @@
+import socket
 from datetime import datetime
 
 from connection_handler import ConnectionHandler
@@ -11,7 +12,7 @@ class DataTakerConnectionHandler(ConnectionHandler):
     def __init__(self, cmd_file):
         self._cmd_file = cmd_file
 
-    def on_new_connection(self, connection, sender_address):
+    def on_new_connection(self, data_receiver, connection, sender_address):
         """
         Sends the commands in the cmd_file to the device. Before sending the
         commands in the cmd_file sends the Time command.
@@ -25,10 +26,3 @@ class DataTakerConnectionHandler(ConnectionHandler):
         with open(self._cmd_file) as cmd_file:
             for cmd in cmd_file:
                 self._send_cmd(connection, cmd)
-
-    def _send_cmd(self, connection, cmd):
-        """
-        Sends a command in string format to the device.
-        Includes the \r\n in the end of the cmd.
-        """
-        connection.sendall((cmd + "\r\n").encode())

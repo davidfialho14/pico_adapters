@@ -11,3 +11,10 @@ class ConnectionHandler:
         of the server in the standard 2-tuple format.
         """
         pass
+
+    def _send_cmd(self, connection, cmd):
+        """
+        Sends a command in string format to the device.
+        Includes the \r\n in the end of the cmd.
+        """
+        connection.sendall((cmd + "\r\n").encode())
