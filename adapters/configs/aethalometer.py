@@ -1,3 +1,7 @@
+import os
+
+import sys
+
 from configs.base import BaseConfiguration, LoadError
 
 
@@ -42,9 +46,20 @@ class AethalometerConfiguration(BaseConfiguration):
     def _finished_loading(self):
         """
         Checks if all the necessary parameters were loaded. It raises
-        a LoadError if not.
+        a LoadError if not. It also checks if the store and backup directories
+        exist and raises a load error if at least one of them does not exist.
         """
         for key, value in self._params.items():
             if value is None:
                 raise LoadError("the configuration file is missing "
                                 "the parameter '%s'" % key)
+
+        store_dir = self.store_dir
+        if not os.path.exists(store_dir):
+            raise LoadError("the store directory '%s' does "
+                            "not exist" % store_dir)
+
+        backup_dir = self.backup_dir
+        if not os.path.exists(backup_dir):
+            raise LoadError("the backup directory '%s' does "
+                            "not exist" % backup_dir)
