@@ -39,11 +39,16 @@ class ConnectionHandler:
         except socket.timeout:
             pass
 
-    def _receive_and_log(self, data_receiver, connection):
+    def _receive_and_log(self, data_receiver, connection) -> bytes:
         """
         Receives an answer and logs it, before returning, by pre-pending the
         tag 'CONFIGURATION'.
         """
-        answer = data_receiver.raw_receive(connection, timeout=1).decode()
-        Logging.info("CONFIGURATION:" + answer)
+        answer = data_receiver.raw_receive(connection, timeout=1)
+        try:
+            decoded_answer = answer.decode()
+            Logging.info("CONFIGURATION:" + decoded_answer)
+        except UnicodeDecodeError:
+            Logging.info("CONFIGURATION: answer is in binary")
+
         return answer

@@ -1,4 +1,5 @@
 import socket
+from contextlib import suppress
 from datetime import datetime
 
 from connection_handler import ConnectionHandler
@@ -17,16 +18,20 @@ class DataTakerConnectionHandler(ConnectionHandler):
         Sends the commands in the cmd_file to the device. Before sending the
         commands in the cmd_file sends the Time command.
         """
-        time_cmd = datetime.now().strftime("T=%H:%M:%S")
-        self._deploy_cmd(data_receiver, connection, time_cmd)
+        # before sending commands always open the file to ensure it exists
+        # before sending commands
 
-        date_cmd = datetime.now().strftime("D=%d/%m/%Y")
-        self._deploy_cmd(data_receiver, connection, date_cmd)
+        with suppress(FileNotFoundError):
+            with open(self._cmd_file) as cmd_file:
+                time_cmd = datetime.now().strftime("T=%H:%M:%S")
+                self._deploy_cmd(data_receiver, connection, time_cmd)
 
-        with open(self._cmd_file) as cmd_file:
-            for cmd in cmd_file:
-                self._deploy_cmd(data_receiver, connection,
-                                 cmd.replace("\n", ""))
+                date_cmd = datetime.now().strftime("D=%d/%m/%Y")
+                self._deploy_cmd(data_receiver, connection, date_cmd)
+
+                for cmd in cmd_file:
+                    self._deploy_cmd(data_receiver, connection,
+                                     cmd.replace("\n", ""))
 
     def _deploy_cmd(self, data_receiver, connection, cmd):
         """
