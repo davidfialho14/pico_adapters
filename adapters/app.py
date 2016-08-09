@@ -37,7 +37,7 @@ class Application:
 
         return self._config
 
-    def run(self, decoder, data_handlers):
+    def run(self, decoder, data_handlers, connection_handlers):
         """
         Runs the application after loading the configuration.
         If this method is called before loading the configuration a ValueError
@@ -46,6 +46,8 @@ class Application:
         :param decoder: decoder to be used
         :param data_handlers: iterable with all the data handlers to register
                               with the data receiver.
+        :param connection_handlers: iterable with all the connection handlers to
+                                    register with the data receiver.
         """
         if not self._config:
             raise ValueError("can not run before loading the configuration")
@@ -59,6 +61,10 @@ class Application:
         # register all data handlers
         for handler in data_handlers:
             receiver.register_data_handler(handler)
+
+        # register all connection handlers
+        for handler in connection_handlers:
+            receiver.register_connection_handler(handler)
 
         try:
             Logging.info("Started")

@@ -23,7 +23,8 @@ def main():
 
     app.run(decoder=AnemometerDecoder,
             data_handlers=(AnemometerDataStorer(config.store_dir,
-                                                config.backup_dir),))
+                                                config.backup_dir),),
+            connection_handlers=())
 
 if __name__ == '__main__':
     main()
