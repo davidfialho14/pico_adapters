@@ -81,7 +81,7 @@ class DataReceiver:
                     while True:
                         try:
                             Logging.info("Waiting for data...")
-                            data = self._receive(connection)
+                            data = self.receive(connection)
                             Logging.info("Received data")
 
                             for handler in self._data_handlers:
@@ -107,7 +107,7 @@ class DataReceiver:
                 "connection failed: will try to connect in 10 seconds")
             sleep(10)
 
-    def _receive(self, sender_connection) -> str:
+    def receive(self, sender_connection) -> str:
         """
         Blocks until a new chunk of data is received or the connection with the
         sender fails. Before calling this method there must be already a valid
