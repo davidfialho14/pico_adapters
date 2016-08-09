@@ -43,10 +43,11 @@ class DataTakerConnectionHandler(ConnectionHandler):
                     # then ignore an extra empty line
                     answer = b''
                     while answer != b'Initializing...Done.':
-                        answer = data_receiver.raw_receive(connection, timeout=1)
-                    data_receiver.raw_receive(connection, timeout=1)
+                        self._receive_and_log(data_receiver, connection)
+                    self._receive_and_log(data_receiver, connection)
                     break
                 else:
-                    data_receiver.raw_receive(connection, timeout=1)
+                    self._receive_and_log(data_receiver, connection)
+
         except socket.timeout:
             pass
