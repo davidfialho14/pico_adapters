@@ -79,12 +79,18 @@ class DataReceiver:
                     Logging.debug("Connected successfully")
 
                     while True:
-                        Logging.info("Waiting for data...")
-                        data = self._receive(connection)
-                        Logging.info("Received data")
+                        try:
+                            Logging.info("Waiting for data...")
+                            data = self._receive(connection)
+                            Logging.info("Received data")
 
-                        for handler in self._data_handlers:
-                            handler.on_new_data(data)
+                            for handler in self._data_handlers:
+                                handler.on_new_data(data)
+
+                        except InvalidFormatException as error:
+                            # data was not correct
+                            Logging.warning("Received data with invalid format:"
+                                            " %s" % str(error))
 
             except ConnectionAbortedError:
                 Logging.warning("connection aborted by the sender")

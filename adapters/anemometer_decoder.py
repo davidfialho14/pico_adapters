@@ -14,8 +14,12 @@ class AnemometerDecoder:
         end byte (ETX) followed by a checksum. The start and end bytes are
         discard as well as the checksum and only the data is returned.
         """
-        if data[0] != AnemometerDecoder.START_BYTE:
-            raise InvalidFormatException("line is missing the start byte")
+
+        # ignore if the start bytes is missing
+        # start the data after the first comma
+        start_index = data.find(b',')
+        if start_index == -1:
+            raise InvalidFormatException("could not find a comma")
 
         end_index = data.find(AnemometerDecoder.END_BYTE)
 
@@ -26,6 +30,6 @@ class AnemometerDecoder:
         # for now the checksum is ignored
 
         # take only the data - remove the end byte and the comma before it
-        data = data[1:end_index - 1]
+        data = data[start_index:end_index - 1]
 
         return data.decode('utf-8')
