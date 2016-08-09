@@ -25,7 +25,7 @@ def main():
     app.run(decoder=DataTakerDecoder,
             data_handlers=(DataTakerDataStorer(config.store_dir,
                                                config.backup_dir),),
-            connection_handlers=(DataTakerConnectionHandler(config.cmd_file)))
+            connection_handlers=((DataTakerConnectionHandler(config.cmd_file)),))
 
 if __name__ == '__main__':
     main()
