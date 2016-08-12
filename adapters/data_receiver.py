@@ -157,7 +157,6 @@ class DataReceiver:
                 # the transmission
                 sender_connection.settimeout(1 * 60)
 
-            # data += buffer.decode('utf-8')
             data += buffer
 
         return data
