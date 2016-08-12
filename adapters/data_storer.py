@@ -27,6 +27,9 @@ class DataStorer(DataHandler):
 
     def store(self, data: str):
         """ Stores the data line according to the implementation. """
+        if not data:
+            # ignore empty message
+            return
 
         # the datetime passed to teh adjust_data() and generate_filename()
         # methods must be the same to avoid incoherency
