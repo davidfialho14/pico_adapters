@@ -100,7 +100,7 @@ class DataReceiver:
                 Logging.error("the address of the sender is not valid")
                 break  # leave the function
             except ConnectionRefusedError:
-                Logging.exception("can not reach the sender")
+                Logging.warning("can not reach the sender")
 
             # retry in connecting in 10 seconds
             Logging.debug(
