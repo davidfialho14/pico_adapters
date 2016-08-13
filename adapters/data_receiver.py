@@ -99,7 +99,7 @@ class DataReceiver:
             except (sock.herror, sock.gaierror):
                 Logging.error("the address of the sender is not valid")
                 break  # leave the function
-            except (ConnectionRefusedError, sock.error):
+            except ConnectionRefusedError:
                 Logging.exception("can not reach the sender")
 
             # retry in connecting in 10 seconds
