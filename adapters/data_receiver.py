@@ -100,7 +100,7 @@ class DataReceiver:
                 Logging.error("the address of the sender is not valid")
                 break  # leave the function
             except (ConnectionRefusedError, sock.error):
-                Logging.warning("can not reach the sender")
+                Logging.exception("can not reach the sender")
 
             # retry in connecting in 10 seconds
             Logging.debug(
@@ -121,6 +121,11 @@ class DataReceiver:
         :return: data received.
         """
         data = self.raw_receive(sender_connection, timeout)
+
+        # do not decode empty lines
+        if data == b'':
+            return ""
+
         return self._decoder.decode(data)
 
     def raw_receive(self, sender_connection, timeout=6*60) -> bytes:
