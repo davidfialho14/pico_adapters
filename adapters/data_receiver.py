@@ -63,7 +63,6 @@ class DataReceiver:
         chunk of data is received it calls the registered handlers'
         on_new_data() method.
         """
-
         while True:  # allow reconnecting on error
             try:
                 Logging.debug("Trying to connect to %s:%s..." %
@@ -101,6 +100,8 @@ class DataReceiver:
                 break  # leave the function
             except ConnectionRefusedError:
                 Logging.warning("can not reach the sender")
+            except OSError as error:
+                Logging.warning("OSError: %s" % str(error))
 
             # retry in connecting in 10 seconds
             Logging.debug(
